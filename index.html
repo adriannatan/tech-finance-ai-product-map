@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技术财务 AI 产品大图</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+ :root { --bg: #ffffff; --text-1: #1a1c20; --text-2: rgba(26,28,32,0.55); --text-3: rgba(26,28,32,0.3); }
+ * { margin: 0; padding: 0; box-sizing: border-box; }
+ body { background: var(--bg); color: var(--text-1); font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; min-height: 100vh; }
+ .page { max-width: 1100px; margin: 0 auto; padding: 48px 32px 64px; }
+
+ .header { text-align: center; margin-bottom: 32px; }
+ .header-eyebrow { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #0084c9; font-weight: 500; margin-bottom: 20px; }
+ .header h1 { font-size: 36px; font-weight: 700; letter-spacing: 4px; margin-bottom: 14px; color: var(--text-1); -webkit-text-fill-color: var(--text-1); }
+ .header-sub { font-size: 15px; color: #0084c9; font-weight: 400; letter-spacing: 0.5px; }
+ .header-sub span { color: #0084c9; margin: 0 4px; }
+
+ .legend { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 24px; padding: 14px 0; }
+ .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-2); }
+ .legend-dot { width: 8px; height: 8px; border-radius: 3px; }
+
+ .layer { margin-bottom: 28px; }
+ .layer-title { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 14px; padding-left: 14px; border-left: 4px solid #0084c9; }
+ .layer-num { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; color: #0084c9; background: #f0f0f0; padding: 4px 8px; border-radius: 4px; align-self: center; }
+ .layer-label { font-size: 18px; font-weight: 700; color: var(--text-1); }
+ .layer-en { font-family: 'DM Mono', monospace; font-size: 12px; color: #0084c9; margin-left: 6px; font-weight: 400; }
+ .layer-desc { font-size: 12px; color: #0084c9; }
+
+ .chain { display: flex; align-items: center; gap: 10px; margin: 18px 0 8px; }
+ .chain:first-child { margin-top: 4px; }
+ .chain-icon { font-family: 'DM Mono', monospace; font-size: 10px; padding: 3px 8px; border-radius: 6px; font-weight: 500; }
+ .chain-text { font-size: 13px; font-weight: 500; }
+ .chain-line { flex: 1; height: 0.5px; background: rgba(0,0,0,0.06); }
+ .chain-a .chain-icon { background: var(--blue-lightest); color: var(--blue-dark); border: 0.5px solid #0084c9; }
+ .chain-a .chain-text { color: var(--blue-dark); }
+ .chain-b .chain-icon { background: var(--blue-lighter); color: #1a1c20; border: 0.5px solid var(--blue-light); }
+ .chain-b .chain-text { color: #1a1c20; }
+ .chain-c .chain-icon { background: #0084c9; color: #fff; border: 0.5px solid var(--blue-dark); }
+ .chain-c .chain-text { color: #1a1c20; }
+ .chain-d .chain-icon { background: var(--blue-dark); color: #fff; border: 0.5px solid var(--blue-darkest); }
+ .chain-d .chain-text { color: #1a1c20; }
+
+ .modules { display: grid; gap: 10px; grid-template-columns: repeat(4, 1fr); }
+ .mod { border-radius: 8px; padding: 14px; position: relative; overflow: hidden; background: #fff; border: 0.5px solid #0084c9; transition: border-color 0.2s, transform 0.2s; min-height: 160px; display: flex; flex-direction: column; }
+ .mod::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+ .mod:hover { transform: translateY(-1px); border-color: #0084c9; }
+ .chain-a-mods .mod::before { background: #0084c9; }
+ .chain-b-mods .mod::before { background: #0084c9; }
+ .chain-c-mods .mod::before { background: #0084c9; }
+ .chain-d-mods .mod::before { background: #0084c9; }
+ .mod-title { font-size: 13px; font-weight: 700; color: #1a1c20; margin-bottom: 3px; letter-spacing: 1px; }
+ .mod-desc { font-size: 11px; line-height: 1.5; color: var(--text-2); flex: 1; }
+ .mod-progress { display: flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 6px; }
+ .mod-owner { font-size: 10px; color: #888; white-space: nowrap; }
+ .mod-pct { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; color: #888; min-width: 20px; text-align: right; }
+ .pill-track { display: flex; gap: 2px; flex: 1; }
+ .pill-seg { height: 5px; border-radius: 2.5px; flex: 1; }
+ .pill-on { background: #b0b0b0; }
+ .pill-off { background: rgba(0,0,0,0.05); }
+ .mod-link { display: inline-block; align-self: flex-start; margin-top: 6px; font-size: 11px; font-weight: 700; color: #396bff; text-decoration: none; border-bottom: 2px solid #396bff; transition: opacity 0.2s; }
+ .mod-link:hover { opacity: 0.7; }
+ .mod-wip { display: inline-block; align-self: flex-start; margin-top: 6px; font-size: 11px; font-weight: 500; color: #aaa; }
+ .mod-lit { background: #eef8fc; }
+
+ .flow { display: flex; gap: 12px; align-items: stretch; }
+ .flow-step { flex: 1; display: flex; flex-direction: column; }
+ .flow-step-header { font-size: 12px; font-weight: 500; color: #fff; margin-bottom: 8px; padding: 6px 10px; background: #0084c9; border-radius: 6px; text-align: center; }
+ .flow-arrow { display: flex; align-items: center; justify-content: center; color: #0084c9; font-size: 18px; flex-shrink: 0; padding: 0 2px; padding-top: 28px; }
+ .flow-cards { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+
+ .scenarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+ .scenario { border-radius: 8px; padding: 14px; background: #fff; border: 0.5px solid #0084c9; position: relative; transition: border-color 0.2s, transform 0.2s; min-height: 160px; display: flex; flex-direction: column; overflow: hidden; flex: 1; }
+ .scenario::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #0084c9; }
+ .scenario:hover { transform: translateY(-1px); border-color: #0084c9; }
+ .scenario-name { font-size: 14px; font-weight: 700; color: #1a1c20; margin-bottom: 5px; letter-spacing: 1px; }
+ .scenario-skills { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-2); line-height: 1.5; flex: 1; }
+ .scenario-arrow { position: absolute; top: 14px; right: 14px; font-size: 13px; color: var(--text-3); }
+ .scenario-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+ .stag { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 4px; }
+ .stag-a { background: #f0f0f0; color: #888; border: 0.5px solid #ccc; }
+ .stag-b { background: #f0f0f0; color: #888; border: 0.5px solid #ccc; }
+ .stag-c { background: #b0b0b0; color: #fff; border: 0.5px solid #999; }
+ .stag-d { background: #888; color: #fff; border: 0.5px solid #888; }
+
+ .data-section { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+ .pillar { border-radius: 8px; padding: 16px; background: #fff; border: 0.5px solid #0084c9; }
+ .pillar-name { font-size: 14px; font-weight: 500; color: #1a1c20; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+ .pillar-name .dot { width: 6px; height: 6px; border-radius: 50%; background: #0084c9; }
+ .pillar-item { font-size: 12px; color: var(--text-2); padding: 3px 0 3px 12px; position: relative; }
+ .pillar-item::before { content: ''; position: absolute; left: 0; top: 50%; width: 4px; height: 4px; border-radius: 50%; background: #0084c9; transform: translateY(-50%); }
+
+ .products { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+ .product { border-radius: 8px; padding: 14px 16px; background: #fff; border: 0.5px solid #0084c9; position: relative; overflow: hidden; min-height: 160px; display: flex; flex-direction: column; }
+ .product::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #0084c9; }
+ .product-name { font-size: 14px; font-weight: 500; color: #1a1c20; margin-bottom: 4px; }
+ .product-desc { font-size: 11px; color: var(--text-2); line-height: 1.5; flex: 1; }
+ .product-progress { display: flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 6px; }
+ .product-owner { font-size: 10px; color: #888; white-space: nowrap; }
+ .product-pct { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; color: #888; min-width: 20px; text-align: right; }
+
+ .connector { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px 0; margin: 4px 0; position: relative; }
+ .connector::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0,0,0,0.015) 0%, rgba(0,0,0,0.03) 50%, rgba(0,0,0,0.015) 100%); }
+ .connector-chevron { width: 24px; height: 14px; position: relative; z-index: 1; }
+ .connector-chevron svg { width: 24px; height: 14px; }
+ .connector-text { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--text-3); position: relative; z-index: 1; }
+
+ .footer { text-align: center; margin-top: 32px; padding-top: 16px; border-top: 0.5px solid rgba(0,0,0,0.06); font-family: 'DM Mono', monospace; font-size: 10px; color: #888; letter-spacing: 1px; }
+
+ @media (max-width: 768px) { .page{padding:24px 16px 40px} .header h1{font-size:24px} .modules-4,.modules-3{grid-template-columns:repeat(2,1fr)} .scenarios{grid-template-columns:1fr} .data-section,.products{grid-template-columns:1fr} }
+ @media print { .layer{break-inside:avoid} }
+ /* Password Gate */
+ #pw-gate { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+ .pw-box { text-align: center; }
+ .pw-box .pw-title { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #0084c9; margin-bottom: 24px; }
+ .pw-box input { border: 0.5px solid #0084c9; border-radius: 6px; padding: 10px 16px; font-size: 14px; outline: none; width: 240px; text-align: center; letter-spacing: 2px; font-family: 'DM Mono', monospace; }
+ .pw-box input:focus { border-color: #0084c9; box-shadow: 0 0 0 3px rgba(0,132,201,0.1); }
+ .pw-box button { display: block; margin: 12px auto 0; background: #0084c9; color: #fff; border: none; border-radius: 6px; padding: 10px 32px; font-size: 13px; cursor: pointer; font-family: 'DM Mono', monospace; letter-spacing: 1px; }
+ .pw-box button:hover { background: #006aa3; }
+ .pw-box .pw-error { font-size: 11px; color: #e05; margin-top: 10px; min-height: 16px; font-family: 'DM Mono', monospace; }
+</style>
+</head>
+<body>
+<div id="pw-gate">
+ <div class="pw-box">
+ <div class="pw-title">Tech Finance · AI Product Map</div>
+ <input type="password" id="pw-input" placeholder="请输入访问密码" onkeydown="if(event.key==='Enter')checkPw()" autofocus />
+ <button onclick="checkPw()">进入</button>
+ <div class="pw-error" id="pw-error"></div>
+ </div>
+</div>
+<script>
+ (function(){
+   const HASH = '7c9a3f2e1b8d4f6e2a1c9b3d5f7e2a4c8b1d3f5e7a9c2b4d6f8e1a3c5b7d9f2';
+   function sha256hex(str){
+     const buf = new TextEncoder().encode(str);
+     return crypto.subtle.digest('SHA-256', buf).then(b => Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join(''));
+   }
+   if(sessionStorage.getItem('tf_auth')==='1') document.getElementById('pw-gate').style.display='none';
+   window.checkPw = function(){
+     const val = document.getElementById('pw-input').value;
+     sha256hex(val).then(h => {
+       if(h === 'deb1f83358da9735024a2169b0a98f686e51efbacdb940672d34195afda6cc87'){
+         sessionStorage.setItem('tf_auth','1');
+         document.getElementById('pw-gate').style.display='none';
+       } else {
+         document.getElementById('pw-error').textContent='密码错误，请重试';
+         document.getElementById('pw-input').value='';
+         document.getElementById('pw-input').focus();
+       }
+     });
+   };
+ })();
+</script>
+<div class="page">
+ <div class="header">
+ <div class="header-eyebrow">Tech Finance · AI Product Landscape</div>
+ <h1>技术财务 AI 产品大图</h1>
+ <div class="header-sub">「工具箱」三层架构<span>·</span>从数据底座到决策推演<span>·</span>2026</div>
+ </div>
+
+ <div class="legend">
+ <div class="legend-item"><div class="legend-dot" style="background:#eef8fc;border:0.5px solid #0084c9;"></div>A 成本看清</div>
+ <div class="legend-item"><div class="legend-dot" style="background:#0084c9;"></div>B 业务穿透</div>
+ <div class="legend-item"><div class="legend-dot" style="background:#0084c9;"></div>C 资源决策与价值归因</div>
+ <div class="legend-item" style="margin-left:12px;padding-left:12px;border-left:0.5px solid rgba(0,0,0,0.08);"><div style="display:flex;gap:2px;width:30px;"><div style="height:5px;flex:1;border-radius:2.5px;background:#b0b0b0;"></div><div style="height:5px;flex:1;border-radius:2.5px;background:rgba(0,0,0,0.05);"></div><div style="height:5px;flex:1;border-radius:2.5px;background:rgba(0,0,0,0.05);"></div></div>开发进度</div>
+ </div>
+
+ <!-- Layer 3: Use Cases -->
+ <div class="layer">
+ <div class="layer-title"><span class="layer-num">03</span><span class="layer-label">Use Cases</span><span class="layer-en">应用场景层：<span class="layer-desc">从能力抽屉中按需组合 → 端到端应用</span></span></div>
+
+ <div class="flow">
+ <div class="flow-step">
+ <div class="flow-step-header">供应链</div>
+ <div class="flow-cards">
+ <div class="scenario"><span class="scenario-arrow">↗</span><div class="scenario-tags"><span class="stag stag-a">A 成本看清</span><span class="stag stag-c">C 资源决策</span></div><div class="scenario-name">GPU供需动态调仓</div><div class="scenario-skills">供需高度不确定，基于滚动预测（Rolling Forecast）动态调整自建/云/国产配量</div><div class="mod-progress"><span class="mod-owner">产品经理：时透</span><span class="mod-pct">10%</span><div class="pill-track"><div class="pill-seg pill-on" style="opacity:0.5;"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div></div></div><span class="mod-wip">施工中，ETA 5月底</span></div>
+ </div>
+ </div>
+ <div class="flow-arrow" style="color:#0084c9;font-size:24px;font-weight:200;">│</div>
+ <div class="flow-step">
+ <div class="flow-step-header">产品评价</div>
+ <div class="flow-cards">
+ <div class="scenario"><span class="scenario-arrow">↗</span><div class="scenario-tags"><span class="stag stag-a">A 成本看清</span><span class="stag stag-b">B 业务穿透</span></div><div class="scenario-name">单token成本评价</div><div class="scenario-skills">以YoY -50%为锚点，拆解商务谈价、工程、硬件芯片的达成进展</div><div class="mod-progress"><span class="mod-owner">产品经理：时透</span><span class="mod-pct">10%</span><div class="pill-track"><div class="pill-seg pill-on" style="opacity:0.5;"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div></div></div><span class="mod-wip">图纸设计中</span></div>
+ </div>
+ </div>
+ <div class="flow-arrow" style="color:#0084c9;font-size:24px;font-weight:200;">│</div>
+ <div class="flow-step">
+ <div class="flow-step-header">创新投资</div>
+ <div class="flow-cards">
+ <div class="scenario"><span class="scenario-arrow">↗</span><div class="scenario-tags"><span class="stag stag-b">B 业务穿透</span><span class="stag stag-c">C 资源决策</span></div><div class="scenario-name">AI投资</div><div class="scenario-skills">AI探索型投入的产出穿透与成本结构化追踪</div><div class="mod-progress"><span class="mod-owner">产品经理：科斯+时透</span><span class="mod-pct">10%</span><div class="pill-track"><div class="pill-seg pill-on" style="opacity:0.5;"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div></div></div><span class="mod-wip">施工中，ETA 7月底</span></div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <div class="connector"><div class="connector-chevron"><svg viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12L12 3L22 12" stroke="#0084c9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="connector-text">按需组合skills调用</span></div>
+
+ <!-- Layer 2: Skill Hubs -->
+ <div class="layer">
+ <div class="layer-title"><span class="layer-num">02</span><span class="layer-label">Skill Hubs</span><span class="layer-en">能力抽屉层：<span class="layer-desc">钱从哪来 → 花到哪去 → 下一步怎么办</span></span></div>
+
+ <div class="flow">
+ <div class="flow-step">
+ <div class="flow-step-header">A · 成本看清（外账视角）</div>
+ <div class="flow-cards chain-a-mods">
+ <div class="mod"><div class="mod-title">供应商量价分析</div><div class="mod-desc">供应商×云产品粒度的量价分析，尤其是针对腾讯/阿里新生效的saving plan做动态监测和机会点推演</div><div class="mod-progress"><span class="mod-owner">产品经理：科斯+高文杰</span><span class="mod-pct">60%</span><div class="pill-track"><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div></div></div><a href="http://10.21.33.0:5100/" target="_blank" class="mod-link">打开产品 ↗</a></div>
+ <div class="mod mod-lit"><div class="mod-title">内帐月报</div><div class="mod-desc">分内帐场景快速解读月度使用情况</div><div class="mod-progress"><span class="mod-owner">产品经理：技术中台</span><span class="mod-pct">100%</span><div class="pill-track"><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div></div></div><a href="https://hcmp.devops.xiaohongshu.com/api/commodity/files/v1/technology_report/preview/html?objectKey=technology_report%2F106de701fe0641a3bfa36ae42fc855ff_2026-02-report.html" target="_blank" class="mod-link">打开产品 ↗</a></div>
+ <div class="mod mod-lit"><div class="mod-title">内外账预实桥图</div><div class="mod-desc">分业务内帐、技术中台、采购savings来做预实对比，分析预算达成情况</div><div class="mod-progress"><span class="mod-owner">产品经理：七宝+科斯</span><span class="mod-pct">90%</span><div class="pill-track"><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on" style="opacity:0.5;"></div></div></div><a href="内外账预实桥图.html" target="_blank" class="mod-link">打开产品 ↗</a></div>
+ </div>
+ </div>
+ <div class="flow-arrow">→</div>
+ <div class="flow-step">
+ <div class="flow-step-header">B · 业务穿透（内账视角）</div>
+ <div class="flow-cards chain-b-mods">
+ <div class="mod mod-lit"><div class="mod-title">内账下钻分析与机会点推演</div><div class="mod-desc">针对大社区、大商业、大基建12个内帐场景的预实对比、量价Mix拆解，并做技术优化方案做年度R&amp;O测算</div><div class="mod-progress"><span class="mod-owner">产品经理：月兔</span><span class="mod-pct">90%</span><div class="pill-track"><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on" style="opacity:0.5;"></div></div></div><a href="http://10.40.67.137:8888/index.html" target="_blank" class="mod-link">打开产品 ↗</a></div>
+ <div class="mod"><div class="mod-title">GPU Master File</div><div class="mod-desc">持卡总览、分业务线的使用分布、训推占比、以及卡型分布，并做GMVA成本归因分析</div><div class="mod-progress"><span class="mod-owner">产品经理：时透</span><span class="mod-pct">60%</span><div class="pill-track"><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div></div></div><a href="http://10.40.71.226:8899/gpu-master-v3.html" target="_blank" class="mod-link">打开产品 ↗</a></div>
+ <div class="mod"><div class="mod-title">Token计价与推理效率</div><div class="mod-desc">推理分业务线token效率追踪，单token成本趋势与杠杆分析</div><div class="mod-progress"><span class="mod-owner">产品经理：时透</span><span class="mod-pct">30%</span><div class="pill-track"><div class="pill-seg pill-on"></div><div class="pill-seg pill-on" style="opacity:0.5;"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div></div></div><span class="mod-wip">图纸设计中</span></div>
+ </div>
+ </div>
+ <div class="flow-arrow">→</div>
+ <div class="flow-step">
+ <div class="flow-step-header">C · 资源决策与价值归因</div>
+ <div class="flow-cards chain-c-mods">
+ <div class="mod"><div class="mod-title">AI for Productivity</div><div class="mod-desc">对于公司AI生产工具（RedLobi、BIBP、CodeWiz）使用情况的监测</div><div class="mod-progress"><span class="mod-owner">—</span><span class="mod-pct">0%</span><div class="pill-track"><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div></div></div><span class="mod-wip">图纸设计中</span></div>
+ <div class="mod"><div class="mod-title">人机协同审核</div><div class="mod-desc">人机协同审核体系的效能评估与年度R&amp;O测算</div><div class="mod-progress"><span class="mod-owner">产品经理：月兔</span><span class="mod-pct">30%</span><div class="pill-track"><div class="pill-seg pill-on"></div><div class="pill-seg pill-on" style="opacity:0.5;"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div></div></div><span class="mod-wip">施工中，ETA 7月底</span></div>
+ <div class="mod"><div class="mod-title">Build vs Buy 财务测算</div><div class="mod-desc">自建vs采购全周期TCO建模与盈亏平衡分析</div><div class="mod-progress"><span class="mod-owner">产品经理：白泽</span><span class="mod-pct">0%</span><div class="pill-track"><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div></div></div><span class="mod-wip">施工中，ETA 6月底</span></div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <div class="connector"><div class="connector-chevron"><svg viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12L12 3L22 12" stroke="#0084c9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="connector-text">标准化数据清洗能力调取</span></div>
+
+ <!-- Layer 1: Data Hub -->
+ <div class="layer">
+ <div class="layer-title"><span class="layer-num">01</span><span class="layer-label">Data Hubs</span><span class="layer-en">数据底座层：<span class="layer-desc">基于规则化素材，生成交互产品</span></span></div>
+
+ <div class="flow">
+ <div class="flow-step">
+ <div class="flow-step-header">数据标准与维度</div>
+ <div style="border:0.5px solid #0084c9;border-radius:8px;overflow:hidden;flex:1;">
+ <div style="padding:10px 14px;border-bottom:0.5px solid rgba(0,0,0,0.04);display:flex;align-items:center;gap:6px;">
+ <div style="width:14px;height:14px;background:#eef8fc;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#0084c9;">▣</div>
+ <span style="font-size:12px;font-weight:500;color:var(--text-1);">Cost Element</span>
+ </div>
+ <div style="padding:8px 14px 10px;font-size:11px;color:var(--text-2);line-height:2;">
+ <div style="display:flex;align-items:center;gap:6px;"><span style="color:#0084c9;font-size:10px;">📁</span> mapping <span style="color:var(--text-3);font-size:10px;">供应商×云产品映射规则</span></div>
+ <div style="display:flex;align-items:center;gap:6px;"><span style="color:#0084c9;font-size:10px;">📁</span> rules <span style="color:var(--text-3);font-size:10px;">Product Hierarchy · Price Guidelines</span></div>
+ <div style="display:flex;align-items:center;gap:6px;"><span style="color:#0084c9;font-size:10px;">📁</span> raw <span style="color:var(--text-3);font-size:10px;">外账原始数据</span></div>
+ </div>
+ <div style="padding:10px 14px;border-top:0.5px solid rgba(0,0,0,0.04);display:flex;align-items:center;gap:6px;">
+ <div style="width:14px;height:14px;background:#eef8fc;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#0084c9;">▣</div>
+ <span style="font-size:12px;font-weight:500;color:var(--text-1);">Serving Management</span>
+ </div>
+ <div style="padding:8px 14px 10px;font-size:11px;color:var(--text-2);line-height:2;">
+ <div style="display:flex;align-items:center;gap:6px;"><span style="color:#d4a830;font-size:10px;">📁</span> 常规主站</div>
+ <div style="display:flex;align-items:center;gap:6px;"><span style="color:#d4a830;font-size:10px;">📁</span> AI与探索</div>
+ <div style="display:flex;align-items:center;gap:6px;"><span style="color:#d4a830;font-size:10px;">📁</span> 国际化</div>
+ </div>
+ </div>
+ </div>
+ <div class="flow-arrow">→</div>
+ <div class="flow-step">
+ <div class="flow-step-header">Cost Out · 出账</div>
+ <div class="product mod-lit" style="flex:1;"><div class="product-desc">作为 Cost Center 对不同业务出账：常规主站、Dots、主站探索、国际化</div><div class="product-progress"><span class="product-owner">产品经理：科斯</span><span class="product-pct">90%</span><div class="pill-track"><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on" style="opacity:0.5;"></div></div></div><a href="http://10.21.33.0:8765/" target="_blank" class="mod-link">打开产品 ↗</a></div>
+ </div>
+ <div class="flow-arrow" style="color:#0084c9;font-size:24px;font-weight:200;">│</div>
+ <div class="flow-step">
+ <div class="flow-step-header">Cost In · 入账</div>
+ <div class="product mod-lit" style="flex:1;"><div class="product-desc">入账数据清洗，对接会计系统一键入账</div><div class="product-progress"><span class="product-owner">产品经理：科斯</span><span class="product-pct">90%</span><div class="pill-track"><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on" style="opacity:0.5;"></div></div></div><a href="http://10.21.33.0:8765/" target="_blank" class="mod-link">打开产品 ↗</a></div>
+ </div>
+ </div>
+ </div>
+
+ <div class="footer">TECH FINANCE × AI · TOOLBOX ARCHITECTURE · v1.0</div>
+</div>
+</body>
+</html>
