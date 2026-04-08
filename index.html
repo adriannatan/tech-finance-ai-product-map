@@ -110,9 +110,49 @@
 
  @media (max-width: 768px) { .page{padding:24px 16px 40px} .header h1{font-size:24px} .modules-4,.modules-3{grid-template-columns:repeat(2,1fr)} .scenarios{grid-template-columns:1fr} .data-section,.products{grid-template-columns:1fr} }
  @media print { .layer{break-inside:avoid} }
+ /* Password Gate */
+ #pw-gate { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+ .pw-box { text-align: center; }
+ .pw-box .pw-title { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #0084c9; margin-bottom: 24px; }
+ .pw-box input { border: 0.5px solid #0084c9; border-radius: 6px; padding: 10px 16px; font-size: 14px; outline: none; width: 240px; text-align: center; letter-spacing: 2px; font-family: 'DM Mono', monospace; }
+ .pw-box input:focus { border-color: #0084c9; box-shadow: 0 0 0 3px rgba(0,132,201,0.1); }
+ .pw-box button { display: block; margin: 12px auto 0; background: #0084c9; color: #fff; border: none; border-radius: 6px; padding: 10px 32px; font-size: 13px; cursor: pointer; font-family: 'DM Mono', monospace; letter-spacing: 1px; }
+ .pw-box button:hover { background: #006aa3; }
+ .pw-box .pw-error { font-size: 11px; color: #e05; margin-top: 10px; min-height: 16px; font-family: 'DM Mono', monospace; }
 </style>
 </head>
 <body>
+<div id="pw-gate">
+ <div class="pw-box">
+ <div class="pw-title">Tech Finance · AI Product Map</div>
+ <input type="password" id="pw-input" placeholder="请输入访问密码" onkeydown="if(event.key==='Enter')checkPw()" autofocus />
+ <button onclick="checkPw()">进入</button>
+ <div class="pw-error" id="pw-error"></div>
+ </div>
+</div>
+<script>
+ (function(){
+   const HASH = '7c9a3f2e1b8d4f6e2a1c9b3d5f7e2a4c8b1d3f5e7a9c2b4d6f8e1a3c5b7d9f2';
+   function sha256hex(str){
+     const buf = new TextEncoder().encode(str);
+     return crypto.subtle.digest('SHA-256', buf).then(b => Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join(''));
+   }
+   if(sessionStorage.getItem('tf_auth')==='1') document.getElementById('pw-gate').style.display='none';
+   window.checkPw = function(){
+     const val = document.getElementById('pw-input').value;
+     sha256hex(val).then(h => {
+       if(h === 'deb1f83358da9735024a2169b0a98f686e51efbacdb940672d34195afda6cc87'){
+         sessionStorage.setItem('tf_auth','1');
+         document.getElementById('pw-gate').style.display='none';
+       } else {
+         document.getElementById('pw-error').textContent='密码错误，请重试';
+         document.getElementById('pw-input').value='';
+         document.getElementById('pw-input').focus();
+       }
+     });
+   };
+ })();
+</script>
 <div class="page">
  <div class="header">
  <div class="header-eyebrow">Tech Finance · AI Product Landscape</div>
