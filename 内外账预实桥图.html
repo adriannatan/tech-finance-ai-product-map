@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>内外账预实桥图 · 26年常规技术预算</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+ --bg: #ffffff;
+ --text-1: #1a1c20;
+ --text-2: rgba(26,28,32,0.55);
+ --text-3: rgba(26,28,32,0.3);
+ --blue: #0084c9;
+ --blue-light: #7fc4e6;
+ --blue-lighter: #a8d8ed;
+ --blue-lightest: #eef8fc;
+ --blue-dark: #006a9e;
+ --blue-darkest: #00547d;
+ --link-blue: #396bff;
+ --green: #22a06b;
+ --green-light: #dcfff1;
+ --red: #e34935;
+ --red-light: #fff0ee;
+ --amber: #d4a830;
+ --amber-light: #fff8e6;
+ --bar-positive: #0084c9;
+ --bar-negative: #22a06b;
+ --bar-base: #a8d8ed;
+ --bar-pending: rgba(26,28,32,0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+ background: var(--bg);
+ color: var(--text-1);
+ font-family: 'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+ min-height: 100vh;
+ -webkit-font-smoothing: antialiased;
+}
+.page {
+ max-width: 1140px;
+ margin: 0 auto;
+ padding: 40px 32px 64px;
+}
+
+/* ─── Header ─── */
+.header {
+ text-align: center;
+ margin-bottom: 36px;
+}
+.header-eyebrow {
+ font-family: 'DM Mono', monospace;
+ font-size: 12px;
+ letter-spacing: 3px;
+ text-transform: uppercase;
+ color: var(--blue);
+ font-weight: 500;
+ margin-bottom: 14px;
+}
+.header h1 {
+ font-size: 30px;
+ font-weight: 700;
+ letter-spacing: 2px;
+ color: var(--text-1);
+ margin-bottom: 10px;
+}
+.header-sub {
+ font-size: 14px;
+ color: var(--text-2);
+ font-weight: 400;
+}
+.header-sub strong {
+ color: var(--blue);
+ font-weight: 500;
+}
+
+/* ─── Section titles ─── */
+.section-bar {
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ margin-bottom: 18px;
+ padding-left: 14px;
+ border-left: 4px solid var(--blue);
+}
+.section-num {
+ font-family: 'DM Mono', monospace;
+ font-size: 11px;
+ font-weight: 500;
+ color: var(--blue);
+ background: #eef8fc;
+ padding: 3px 8px;
+ border-radius: 4px;
+}
+.section-label {
+ font-size: 17px;
+ font-weight: 700;
+ color: var(--text-1);
+}
+.section-desc {
+ font-family: 'DM Mono', monospace;
+ font-size: 11px;
+ color: var(--blue);
+ margin-left: 4px;
+}
+
+/* ─── Part 1: Data Sources ─── */
+.data-sources {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 14px;
+ margin-bottom: 36px;
+}
+.source-card {
+ border: 0.5px solid var(--blue-lighter);
+ border-radius: 10px;
+ padding: 20px 22px;
+ background: #fff;
+ position: relative;
+ overflow: hidden;
+ transition: border-color 0.2s, transform 0.15s;
+ cursor: pointer;
+ text-decoration: none;
+ color: inherit;
+ display: flex;
+ flex-direction: column;
+ gap: 10px;
+}
+.source-card::before {
+ content: '';
+ position: absolute;
+ top: 0; left: 0; right: 0;
+ height: 3px;
+ background: var(--blue-lighter);
+}
+.source-card:hover {
+ border-color: var(--blue-light);
+ transform: translateY(-2px);
+}
+.source-card:hover::before {
+ background: var(--blue);
+}
+.source-icon {
+ width: 36px; height: 36px;
+ border-radius: 8px;
+ background: var(--blue-lightest);
+ display: flex; align-items: center; justify-content: center;
+ font-size: 16px;
+ color: var(--blue);
+}
+.source-name {
+ font-size: 15px;
+ font-weight: 700;
+ color: var(--blue-darkest);
+}
+.source-desc {
+ font-size: 12px;
+ color: var(--text-2);
+ line-height: 1.6;
+}
+.source-tag {
+ font-family: 'DM Mono', monospace;
+ font-size: 10px;
+ color: var(--blue);
+ background: var(--blue-lightest);
+ padding: 3px 10px;
+ border-radius: 4px;
+ align-self: flex-start;
+ border: 0.5px solid var(--blue-lighter);
+ margin-top: auto;
+}
+.source-arrow {
+ position: absolute;
+ top: 18px; right: 18px;
+ font-size: 14px;
+ color: var(--text-3);
+ transition: color 0.2s;
+}
+.source-card:hover .source-arrow { color: var(--blue); }
+
+/* ─── Part 2: Bridge Chart ─── */
+.bridge-section {
+ margin-bottom: 40px;
+}
+.bridge-context {
+ background: linear-gradient(135deg, #f6fbfd 0%, #eef8fc 100%);
+ border-radius: 10px;
+ padding: 22px 26px;
+ margin-bottom: 24px;
+ border: 0.5px solid var(--blue-lightest);
+}
+.bridge-context-title {
+ font-size: 14px;
+ font-weight: 700;
+ color: var(--blue-darkest);
+ margin-bottom: 10px;
+ display: flex;
+ align-items: center;
+ gap: 8px;
+}
+.bridge-context-title::before {
+ content: '';
+ width: 6px; height: 6px;
+ border-radius: 50%;
+ background: var(--blue);
+}
+.context-grid {
+ display: grid;
+ grid-template-columns: repeat(4, 1fr);
+ gap: 12px;
+}
+.context-kpi {
+ text-align: center;
+ padding: 10px 8px;
+ background: #fff;
+ border-radius: 8px;
+ border: 0.5px solid var(--blue-lightest);
+}
+.context-kpi-value {
+ font-family: 'DM Mono', monospace;
+ font-size: 22px;
+ font-weight: 500;
+ color: var(--blue-darkest);
+ line-height: 1.2;
+}
+.context-kpi-unit {
+ font-size: 13px;
+ font-weight: 400;
+ color: var(--text-2);
+}
+.context-kpi-label {
+ font-size: 11px;
+ color: var(--text-2);
+ margin-top: 4px;
+}
+
+/* ─── Waterfall Chart ─── */
+.waterfall-wrapper {
+ background: #fff;
+ border: 0.5px solid var(--blue-lighter);
+ border-radius: 12px;
+ padding: 28px 24px 20px;
+ overflow-x: auto;
+}
+.waterfall-title {
+ font-size: 15px;
+ font-weight: 700;
+ color: var(--blue-darkest);
+ text-align: center;
+ margin-bottom: 4px;
+}
+.waterfall-subtitle {
+ font-family: 'DM Mono', monospace;
+ font-size: 11px;
+ color: var(--text-2);
+ text-align: center;
+ margin-bottom: 24px;
+}
+
+.waterfall {
+ display: flex;
+ align-items: flex-end;
+ gap: 0;
+ min-width: 900px;
+ height: 340px;
+ position: relative;
+ padding-bottom: 80px;
+}
+.wf-col {
+ flex: 1;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ position: relative;
+ height: 100%;
+ justify-content: flex-end;
+ padding-bottom: 0;
+}
+.wf-value {
+ font-family: 'DM Mono', monospace;
+ font-size: 13px;
+ font-weight: 500;
+ color: var(--text-1);
+ margin-bottom: 4px;
+ white-space: nowrap;
+}
+.wf-bar-area {
+ position: relative;
+ width: 48px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+.wf-bar {
+ width: 48px;
+ border-radius: 4px 4px 2px 2px;
+ position: relative;
+ transition: opacity 0.2s;
+ cursor: default;
+}
+.wf-bar:hover { opacity: 0.85; }
+
+.wf-bar.positive { background: var(--bar-positive); }
+.wf-bar.negative { background: var(--bar-negative); }
+.wf-bar.base { background: var(--bar-base); }
+.wf-bar.total { background: var(--blue-darkest); }
+.wf-bar.pending { background: repeating-linear-gradient(135deg, var(--blue-lightest), var(--blue-lightest) 4px, #fff 4px, #fff 8px); border: 1px dashed var(--blue-light); }
+.wf-bar.savings { background: var(--green); }
+
+.wf-connector {
+ position: absolute;
+ border-top: 1px dashed var(--text-3);
+ z-index: 2;
+ pointer-events: none;
+}
+
+.wf-label-area {
+ margin-top: 10px;
+ text-align: center;
+ width: 100%;
+}
+.wf-label {
+ font-size: 11px;
+ color: var(--text-2);
+ line-height: 1.4;
+ white-space: nowrap;
+}
+.wf-edau {
+ font-family: 'DM Mono', monospace;
+ font-size: 10px;
+ color: var(--text-3);
+ margin-top: 2px;
+}
+
+/* separator between inner/outer */
+.wf-separator {
+ flex: 0 0 2px;
+ height: 100%;
+ position: relative;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+.wf-separator::before {
+ content: '';
+ position: absolute;
+ top: 0; bottom: 80px;
+ width: 1px;
+ background: repeating-linear-gradient(to bottom, var(--blue-light) 0, var(--blue-light) 4px, transparent 4px, transparent 8px);
+}
+.wf-sep-label {
+ position: absolute;
+ top: -4px;
+ background: #fff;
+ padding: 2px 8px;
+ font-family: 'DM Mono', monospace;
+ font-size: 9px;
+ color: var(--blue);
+ letter-spacing: 1px;
+ white-space: nowrap;
+ border: 0.5px solid var(--blue-lightest);
+ border-radius: 3px;
+}
+
+/* bridge annotation */
+.bridge-annotation {
+ display: flex;
+ gap: 14px;
+ margin-top: 18px;
+}
+.annotation-card {
+ flex: 1;
+ padding: 14px 16px;
+ border-radius: 8px;
+ border: 0.5px solid;
+}
+.annotation-card.savings-note {
+ background: var(--green-light);
+ border-color: #b8e6d0;
+}
+.annotation-card.midtai-note {
+ background: var(--amber-light);
+ border-color: #e8d49a;
+}
+.annotation-card.pending-note {
+ background: #f8f8f8;
+ border-color: #e0e0e0;
+}
+.annotation-title {
+ font-size: 12px;
+ font-weight: 700;
+ margin-bottom: 4px;
+}
+.annotation-title.green { color: var(--green); }
+.annotation-title.amber { color: var(--amber); }
+.annotation-title.gray { color: var(--text-2); }
+.annotation-body {
+ font-size: 11px;
+ color: var(--text-2);
+ line-height: 1.6;
+}
+
+/* ─── Part 3: Next Steps ─── */
+.next-section {
+ margin-top: 8px;
+}
+.next-cards {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 14px;
+}
+.next-card {
+ border: 0.5px solid var(--blue-lighter);
+ border-radius: 10px;
+ padding: 22px 20px;
+ background: #fff;
+ position: relative;
+ overflow: hidden;
+ transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+ cursor: pointer;
+ text-decoration: none;
+ color: inherit;
+ display: flex;
+ flex-direction: column;
+ gap: 8px;
+}
+.next-card::before {
+ content: '';
+ position: absolute;
+ top: 0; left: 0; right: 0;
+ height: 3px;
+}
+.next-card.cost-out::before { background: var(--blue); }
+.next-card.cost-in::before { background: var(--blue-dark); }
+.next-card.monthly::before { background: var(--blue-lighter); }
+.next-card:hover {
+ border-color: var(--blue-light);
+ transform: translateY(-2px);
+ box-shadow: 0 4px 16px rgba(0,132,201,0.08);
+}
+.next-icon {
+ width: 40px; height: 40px;
+ border-radius: 10px;
+ display: flex; align-items: center; justify-content: center;
+ font-size: 18px;
+ margin-bottom: 4px;
+}
+.next-card.cost-out .next-icon { background: var(--blue-lightest); color: var(--blue); }
+.next-card.cost-in .next-icon { background: #e0f0f6; color: var(--blue-dark); }
+.next-card.monthly .next-icon { background: #f0f0f0; color: var(--blue-light); }
+.next-name {
+ font-size: 15px;
+ font-weight: 700;
+ color: var(--blue-darkest);
+}
+.next-desc {
+ font-size: 12px;
+ color: var(--text-2);
+ line-height: 1.6;
+ flex: 1;
+}
+.next-cta {
+ font-family: 'DM Mono', monospace;
+ font-size: 11px;
+ font-weight: 500;
+ color: var(--blue);
+ display: flex;
+ align-items: center;
+ gap: 4px;
+ margin-top: 4px;
+}
+.next-cta::after {
+ content: '→';
+ transition: transform 0.2s;
+}
+.next-card:hover .next-cta::after {
+ transform: translateX(3px);
+}
+
+/* ─── Footer ─── */
+.footer {
+ text-align: center;
+ margin-top: 32px;
+ font-family: 'DM Mono', monospace;
+ font-size: 10px;
+ color: var(--text-3);
+ letter-spacing: 1px;
+}
+
+/* ─── Canvas Waterfall (JS-drawn) ─── */
+#waterfallCanvas {
+ width: 100%;
+ display: block;
+}
+
+/* ─── Tooltip ─── */
+.wf-tooltip {
+ display: none;
+ position: absolute;
+ background: var(--blue-darkest);
+ color: #fff;
+ padding: 8px 12px;
+ border-radius: 6px;
+ font-size: 11px;
+ line-height: 1.5;
+ z-index: 10;
+ pointer-events: none;
+ white-space: nowrap;
+ box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 768px) {
+ .page { padding: 24px 16px 40px; }
+ .header h1 { font-size: 22px; }
+ .data-sources { grid-template-columns: 1fr; }
+ .context-grid { grid-template-columns: repeat(2, 1fr); }
+ .next-cards { grid-template-columns: 1fr; }
+ .bridge-annotation { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+ <!-- Header -->
+ <div class="header">
+ <div class="header-eyebrow">Tech Finance · Budget Bridge</div>
+ <h1>内外账预实桥图</h1>
+ <div class="header-sub">26年常规技术预算 <strong>外账视角</strong><span style="color:var(--text-3);margin:0 6px;">·</span>财务底线版<span style="color:var(--text-3);margin:0 6px;">·</span>eDAU 目标 1.85亿</div>
+ </div>
+
+ <!-- Part 1: Data Sources -->
+ <div style="margin-bottom:32px;">
+ <div class="section-bar">
+ <span class="section-num">01</span>
+ <span class="section-label">数据源</span>
+ <span class="section-desc">Data Sources</span>
+ </div>
+ <div class="data-sources">
+ <a class="source-card" href="https://hcmp.devops.xiaohongshu.com/api/commodity/files/v1/technology_report/preview/html?objectKey=technology_report%2F106de701fe0641a3bfa36ae42fc855ff_2026-02-report.html" target="_blank">
+ <span class="source-arrow">↗</span>
+ <div class="source-icon">📊</div>
+ <div class="source-name">内帐月报</div>
+ <div class="source-desc">分内帐场景快速解读月度使用情况，覆盖大社区、大商业、大基建 12 个场景的实际消耗数据</div>
+ <span class="source-tag">Layer 02 · Skill Hub A</span>
+ </a>
+ <a class="source-card" href="http://10.21.33.0:8765/" target="_blank">
+ <span class="source-arrow">↗</span>
+ <div class="source-icon">🗄</div>
+ <div class="source-name">Data Hub · Cost Element</div>
+ <div class="source-desc">供应商×云产品映射规则、Product Hierarchy、Price Guidelines 及外账原始数据</div>
+ <span class="source-tag">Layer 01 · Data Hub</span>
+ </a>
+ </div>
+ </div>
+
+ <!-- Part 2: Bridge Chart -->
+ <div class="bridge-section">
+ <div class="section-bar">
+ <span class="section-num">02</span>
+ <span class="section-label">预算桥图</span>
+ <span class="section-desc">Budget Bridge · 外账视角</span>
+ </div>
+
+ <!-- Context KPIs -->
+ <div class="bridge-context">
+ <div class="bridge-context-title">26年预算核心假设</div>
+ <div class="context-grid">
+ <div class="context-kpi">
+ <div class="context-kpi-value">1.85<span class="context-kpi-unit">亿</span></div>
+ <div class="context-kpi-label">eDAU 目标</div>
+ </div>
+ <div class="context-kpi">
+ <div class="context-kpi-value">3.24<span class="context-kpi-unit">元</span></div>
+ <div class="context-kpi-label">单eDAU成本（外账）</div>
+ </div>
+ <div class="context-kpi">
+ <div class="context-kpi-value">67<span class="context-kpi-unit">亿</span></div>
+ <div class="context-kpi-label">外账预算</div>
+ </div>
+ <div class="context-kpi">
+ <div class="context-kpi-value">70<span class="context-kpi-unit">亿</span></div>
+ <div class="context-kpi-label">内帐预算</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Waterfall Chart drawn by Canvas -->
+ <div class="waterfall-wrapper">
+ <div class="waterfall-title">26年常规技术外账预算桥图</div>
+ <div class="waterfall-subtitle">单位：亿元 ｜ 内帐 69亿 → 采购savings -1亿 → 中台优化 -1亿 → 外账 67亿</div>
+ <canvas id="waterfallCanvas" height="420"></canvas>
+ </div>
+
+ <!-- Annotations -->
+ <div class="bridge-annotation">
+ <div class="annotation-card savings-note">
+ <div class="annotation-title green">采购 Savings 目标 -1亿</div>
+ <div class="annotation-body">25年常规 3.7亿：阿里 2.1亿、腾讯 1.6亿（常规部分不含 GPU 大卡 1.3亿，出云流量费减免 5亿）</div>
+ </div>
+ <div class="annotation-card midtai-note">
+ <div class="annotation-title amber">中台运营优化 -1亿</div>
+ <div class="annotation-body">25年是亏损 3.6亿：含 2.4亿中台亏损、0.2亿 TT 事件、1亿大卡固卡和 910 适配成本</div>
+ </div>
+ <div class="annotation-card pending-note">
+ <div class="annotation-title gray">待决策：策略型投产 5亿+3亿</div>
+ <div class="annotation-body">业务提报总投产清单 10亿，财务侧建议预算中保障 5亿，剩余 5亿靠 self-funding。是否公司层额外保留待季度复盘</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Part 3: Next Steps -->
+ <div class="next-section">
+ <div class="section-bar">
+ <span class="section-num">03</span>
+ <span class="section-label">下一步</span>
+ <span class="section-desc">Deep Dive</span>
+ </div>
+ <div class="next-cards">
+ <a class="next-card cost-out" href="http://10.21.33.0:8765/" target="_blank">
+ <div class="next-icon">📤</div>
+ <div class="next-name">Cost Out · 出账</div>
+ <div class="next-desc">作为 Cost Center 对不同业务线出账：常规主站、Dots、主站探索、国际化</div>
+ <div class="next-cta">查看出账明细</div>
+ </a>
+ <a class="next-card cost-in" href="http://10.21.33.0:8765/" target="_blank">
+ <div class="next-icon">📥</div>
+ <div class="next-name">Cost In · 入账</div>
+ <div class="next-desc">入账数据清洗，对接会计系统一键入账，确保内外账口径一致</div>
+ <div class="next-cta">查看入账流水</div>
+ </a>
+ <a class="next-card monthly" href="https://hcmp.devops.xiaohongshu.com/api/commodity/files/v1/technology_report/preview/html?objectKey=technology_report%2F106de701fe0641a3bfa36ae42fc855ff_2026-02-report.html" target="_blank">
+ <div class="next-icon">📋</div>
+ <div class="next-name">内帐月报</div>
+ <div class="next-desc">分 12 个内帐场景的月度使用量、预实对比及趋势分析</div>
+ <div class="next-cta">查看最新月报</div>
+ </a>
+ </div>
+ </div>
+
+ <div class="footer">TECH FINANCE × AI · 内外账预实桥图 · v1.0</div>
+</div>
+
+<script>
+// ─── Waterfall Data ───
+const data = [
+ { label: "25年实际", sub: "内帐基数", value: 52, type: "base", edau: "2.83" },
+ { label: "eDAU自增", sub: "+17%", value: 8, type: "positive", edau: "+0.20" },
+ { label: "投产carry-over", sub: "25年专项", value: 4, type: "positive", edau: "+0.20" },
+ { label: "26年预算", sub: "+eDAU自增", value: null, type: "subtotal", edau: "3.03" }, // 63 computed
+ { label: "场景动因", sub: "结构性影响", value: 4, type: "positive", edau: "+0.20" },
+ { label: "策略型投产", sub: "待决策", value: 5, type: "pending", edau: "+0.20" },
+ { label: "技术做功优化", sub: "GPU/CPU效能", value: -3, type: "negative", edau: "-0.14" },
+ { label: "26年内帐预算", sub: "目标", value: null, type: "subtotal-inner", edau: "3.39" }, // 69 (or 70 w/ pending)
+ { label: "sep", type: "separator" },
+ { label: "采购savings", sub: "目标", value: -1, type: "savings", edau: "-0.10" },
+ { label: "中台运营", sub: "优化", value: -1, type: "savings", edau: "-0.05" },
+ { label: "26年外账预算", sub: "决策点2", value: null, type: "total", edau: "3.24" }, // 67
+];
+
+function drawWaterfall() {
+ const canvas = document.getElementById('waterfallCanvas');
+ const dpr = window.devicePixelRatio || 1;
+ const rect = canvas.parentElement.getBoundingClientRect();
+ const W = rect.width - 48; // account for wrapper padding
+ canvas.style.width = W + 'px';
+ canvas.width = W * dpr;
+ canvas.height = 420 * dpr;
+ const ctx = canvas.getContext('2d');
+ ctx.scale(dpr, dpr);
+
+ const cols = data.filter(d => d.type !== 'separator');
+ const sepIndex = data.findIndex(d => d.type === 'separator');
+ const numCols = cols.length;
+ const colW = W / (numCols + 1); // extra spacing for separator
+ const chartTop = 30;
+ const chartBottom = 330;
+ const labelY = 350;
+ const edauY = 380;
+ const chartH = chartBottom - chartTop;
+
+ // Compute running values
+ let running = 0;
+ let positions = []; // { x, bottom, top, value, item }
+ const maxVal = 75; // scale max
+ const scale = chartH / maxVal;
+
+ let colIdx = 0;
+ let hasSep = false;
+
+ for (let i = 0; i < data.length; i++) {
+ const d = data[i];
+ if (d.type === 'separator') { hasSep = true; continue; }
+
+ const xOffset = hasSep ? 1 : 0; // add gap after separator
+ const x = (colIdx + xOffset) * colW + colW * 0.5;
+ const barW = Math.min(colW * 0.55, 52);
+
+ if (d.type === 'base') {
+ running = d.value;
+ const barH = d.value * scale;
+ positions.push({ x, bottom: chartBottom, top: chartBottom - barH, value: d.value, item: d, barW });
+ } else if (d.type === 'subtotal' || d.type === 'subtotal-inner' || d.type === 'total') {
+ const barH = running * scale;
+ positions.push({ x, bottom: chartBottom, top: chartBottom - barH, value: running, item: d, barW });
+ } else if (d.type === 'positive' || d.type === 'pending') {
+ const prevTop = chartBottom - running * scale;
+ const barH = d.value * scale;
+ running += d.value;
+ positions.push({ x, bottom: prevTop, top: prevTop - barH, value: d.value, item: d, barW });
+ } else if (d.type === 'negative' || d.type === 'savings') {
+ const prevTop = chartBottom - running * scale;
+ const barH = Math.abs(d.value) * scale;
+ running += d.value;
+ positions.push({ x, bottom: prevTop + barH, top: prevTop, value: d.value, item: d, barW });
+ }
+ colIdx++;
+ }
+
+ // Colors
+ const colors = {
+ base: '#a8d8ed',
+ positive: '#0084c9',
+ pending: null, // special pattern
+ negative: '#22a06b',
+ savings: '#22a06b',
+ subtotal: '#0084c9',
+ 'subtotal-inner': '#006a9e',
+ total: '#00547d'
+ };
+
+ // Draw connector lines
+ ctx.save();
+ ctx.setLineDash([4, 3]);
+ ctx.strokeStyle = 'rgba(26,28,32,0.12)';
+ ctx.lineWidth = 1;
+ for (let i = 0; i < positions.length - 1; i++) {
+ const curr = positions[i];
+ const next = positions[i + 1];
+
+ const runningAfter = getRunningAfter(i);
+ const connY = chartBottom - runningAfter * scale;
+
+ ctx.beginPath();
+ ctx.moveTo(curr.x + curr.barW / 2 + 2, connY);
+ ctx.lineTo(next.x - next.barW / 2 - 2, connY);
+ ctx.stroke();
+ }
+ ctx.restore();
+
+ // Draw separator line
+ if (sepIndex >= 0) {
+ const afterSepIdx = positions.findIndex(p => p.item === data[sepIndex + 1]);
+ if (afterSepIdx > 0) {
+ const sepX = (positions[afterSepIdx - 1].x + positions[afterSepIdx].x) / 2;
+ ctx.save();
+ ctx.setLineDash([4, 4]);
+ ctx.strokeStyle = '#7fc4e6';
+ ctx.lineWidth = 1.5;
+ ctx.beginPath();
+ ctx.moveTo(sepX, chartTop - 10);
+ ctx.lineTo(sepX, chartBottom + 5);
+ ctx.stroke();
+ ctx.restore();
+
+ // Sep label
+ ctx.save();
+ ctx.font = '500 10px "DM Mono", monospace';
+ ctx.fillStyle = '#0084c9';
+ ctx.textAlign = 'center';
+ const sepLabel = '内帐 → 外帐';
+ const tw = ctx.measureText(sepLabel).width;
+ ctx.fillStyle = '#fff';
+ ctx.fillRect(sepX - tw/2 - 8, chartTop - 20, tw + 16, 16);
+ ctx.fillStyle = '#0084c9';
+ ctx.fillText(sepLabel, sepX, chartTop - 8);
+ ctx.restore();
+ }
+ }
+
+ // Draw bars
+ positions.forEach((p, i) => {
+ const { x, bottom, top, value, item, barW } = p;
+ const barH = bottom - top;
+
+ if (item.type === 'pending') {
+ ctx.save();
+ ctx.strokeStyle = '#7fc4e6';
+ ctx.lineWidth = 1.5;
+ ctx.setLineDash([4, 3]);
+ roundRect(ctx, x - barW/2, top, barW, barH, 4);
+ ctx.stroke();
+ ctx.fillStyle = '#eef8fc';
+ ctx.setLineDash([]);
+ roundRect(ctx, x - barW/2, top, barW, barH, 4);
+ ctx.fill();
+ ctx.restore();
+ } else {
+ ctx.save();
+ ctx.fillStyle = colors[item.type] || '#0084c9';
+ ctx.setLineDash([]);
+ roundRect(ctx, x - barW/2, top, barW, barH, 4);
+ ctx.fill();
+ ctx.restore();
+ }
+
+ // Value label above bar
+ ctx.save();
+ ctx.font = '500 13px "DM Mono", monospace';
+ ctx.textAlign = 'center';
+ ctx.fillStyle = item.type === 'pending' ? '#8899cc' : '#1a1c20';
+ let displayVal;
+ if (item.type === 'subtotal') displayVal = '63';
+ else if (item.type === 'subtotal-inner') displayVal = '69';
+ else if (item.type === 'total') displayVal = '67';
+ else if (value < 0) displayVal = value.toString();
+ else displayVal = value.toString();
+ ctx.fillText(displayVal, x, top - 8);
+ ctx.restore();
+
+ // Label below
+ ctx.save();
+ ctx.font = '400 11px "Noto Sans SC", sans-serif';
+ ctx.textAlign = 'center';
+ ctx.fillStyle = 'rgba(26,28,32,0.55)';
+ ctx.fillText(item.label, x, labelY);
+ if (item.sub) {
+ ctx.font = '400 10px "Noto Sans SC", sans-serif';
+ ctx.fillStyle = 'rgba(26,28,32,0.3)';
+ ctx.fillText(item.sub, x, labelY + 16);
+ }
+ ctx.restore();
+
+ // eDAU cost
+ ctx.save();
+ ctx.font = '400 10px "DM Mono", monospace';
+ ctx.textAlign = 'center';
+ ctx.fillStyle = 'rgba(26,28,32,0.25)';
+ if (item.edau) {
+ ctx.fillText('¥' + item.edau, x, edauY + 6);
+ }
+ ctx.restore();
+ });
+
+ // eDAU label
+ ctx.save();
+ ctx.font = '500 9px "DM Mono", monospace';
+ ctx.fillStyle = 'rgba(26,28,32,0.2)';
+ ctx.textAlign = 'left';
+ ctx.fillText('单eDAU成本 ¥', 4, edauY + 6);
+ ctx.restore();
+
+ // Helper: running sum after index
+ function getRunningAfter(idx) {
+ let sum = positions[0].value;
+ for (let j = 1; j <= idx; j++) {
+ const t = positions[j].item.type;
+ if (t === 'subtotal' || t === 'subtotal-inner' || t === 'total') continue;
+ sum += positions[j].value;
+ }
+ return sum;
+ }
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+ ctx.beginPath();
+ ctx.moveTo(x + r, y);
+ ctx.lineTo(x + w - r, y);
+ ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+ ctx.lineTo(x + w, y + h - r);
+ ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+ ctx.lineTo(x + r, y + h);
+ ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+ ctx.lineTo(x, y + r);
+ ctx.quadraticCurveTo(x, y, x + r, y);
+ ctx.closePath();
+}
+
+// Initial draw & resize
+drawWaterfall();
+window.addEventListener('resize', drawWaterfall);
+</script>
+</body>
+</html>
