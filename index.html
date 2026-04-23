@@ -8,7 +8,7 @@
 <style>
  :root { --bg: #ffffff; --text-1: #3a3a3a; --text-2: rgba(58,58,58,0.55); --text-3: #777; }
  * { margin: 0; padding: 0; box-sizing: border-box; }
- body { background: var(--bg); color: var(--text-1); font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; min-height: 100vh; }
+ body { background: #faf9f7; color: var(--text-1); font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; min-height: 100vh; }
  .page { max-width: 1100px; margin: 0 auto; padding: 48px 32px 64px; }
 
  .header { text-align: center; margin-bottom: 32px; }
@@ -43,7 +43,7 @@
  .chain-d .chain-text { color: #3a3a3a; }
 
  .modules { display: grid; gap: 10px; grid-template-columns: repeat(4, 1fr); }
- .mod { border-radius: 8px; padding: 14px; position: relative; overflow: hidden; background: #fff; border: 0.5px solid #0084c9; transition: border-color 0.2s, transform 0.2s; min-height: 160px; display: flex; flex-direction: column; }
+ .mod { border-radius: 8px; padding: 14px; position: relative; overflow: hidden; background: #fff; border: 0.5px solid #0084c9; transition: border-color 0.2s, transform 0.2s; min-height: 180px; display: flex; flex-direction: column; }
  .mod::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
  .mod:hover { transform: translateY(-1px); border-color: #0084c9; }
  .chain-a-mods .mod::before { background: #0084c9; }
@@ -71,7 +71,7 @@
  .flow-cards { display: flex; flex-direction: column; gap: 20px; flex: 1; }
 
  .scenarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
- .scenario { border-radius: 8px; padding: 14px; background: #fff; border: 0.5px solid #0084c9; position: relative; transition: border-color 0.2s, transform 0.2s; min-height: 160px; display: flex; flex-direction: column; overflow: hidden; flex: 1; }
+ .scenario { border-radius: 8px; padding: 14px; background: #fff; border: 0.5px solid #0084c9; position: relative; transition: border-color 0.2s, transform 0.2s; min-height: 180px; display: flex; flex-direction: column; overflow: hidden; flex: 1; }
  .scenario::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #0084c9; }
  .scenario:hover { transform: translateY(-1px); border-color: #0084c9; }
  .scenario-name { font-size: 14px; font-weight: 700; color: #3a3a3a; margin-bottom: 5px; letter-spacing: 1px; }
@@ -92,7 +92,7 @@
  .pillar-item::before { content: ''; position: absolute; left: 0; top: 50%; width: 4px; height: 4px; border-radius: 50%; background: #0084c9; transform: translateY(-50%); }
 
  .products { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
- .product { border-radius: 8px; padding: 14px 16px; background: #fff; border: 0.5px solid #0084c9; position: relative; overflow: hidden; min-height: 160px; display: flex; flex-direction: column; }
+ .product { border-radius: 8px; padding: 14px 16px; background: #fff; border: 0.5px solid #0084c9; position: relative; overflow: hidden; min-height: 180px; display: flex; flex-direction: column; }
  .product::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #0084c9; }
  .product-name { font-size: 14px; font-weight: 500; color: #3a3a3a; margin-bottom: 4px; }
  .product-desc { font-size: 11px; color: var(--text-2); line-height: 1.5; flex: 1; }
@@ -172,7 +172,7 @@
  <div class="flow-step">
  <div class="flow-step-header">供应链</div>
  <div class="flow-cards">
- <div class="scenario"><span class="scenario-arrow">↗</span><div class="scenario-tags"><span class="stag stag-a">A 成本看清</span><span class="stag stag-c">C 资源决策</span></div><div class="scenario-name">GPU供需动态调仓</div><div class="scenario-skills">供需高度不确定，基于滚动预测（Rolling Forecast）动态调整自建/云/国产配量</div><div class="mod-progress"><span class="mod-owner"><span style="border-bottom:2px solid #0084c9;">产品经理</span>：时透</span><span class="mod-pct">10%</span><div class="pill-track"><div class="pill-seg pill-on" style="opacity:0.5;"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div><div class="pill-seg pill-off"></div></div></div><span class="mod-wip">施工中，ETA 5月底</span></div>
+ <div class="scenario"><span class="scenario-arrow">↗</span><div class="scenario-tags"><span class="stag stag-a">A 成本看清</span><span class="stag stag-c">C 资源决策</span></div><div class="scenario-name">GPU供需动态调仓</div><div class="scenario-skills">供需高度不确定，基于滚动预测（Rolling Forecast）动态调整自建/云/国产配量</div><div class="mod-progress"><span class="mod-owner"><span style="border-bottom:2px solid #0084c9;">产品经理</span>：艾妲</span><span class="mod-pct">90%</span><div class="pill-track"><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on"></div><div class="pill-seg pill-on" style="opacity:0.5;"></div></div></div><a href="https://aifin.xiaohongshu.com/rfphecda/aiworkbench/query/query_dashboard?dashboardId=290F1D063074F1E94DB9EFEB7EE28E41" target="_blank" class="mod-link">打开产品 ↗</a></div>
  </div>
  </div>
  <div class="flow-arrow" style="color:#0084c9;font-size:24px;font-weight:200;">│</div>
